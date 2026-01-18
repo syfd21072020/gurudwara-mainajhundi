@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Login - Mainajhundi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --blue: #1C39BB;
+            --gold: #D4AF37;
+            --kesari: #FF9933;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://images.unsplash.com/photo-1590050752117-23a9d7fc2b39?auto=format&fit=crop&q=80&w=1000');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            padding: 40px 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+            color: white;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+
+        .khanda-logo {
+            font-size: 60px;
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
+            margin-bottom: 10px;
+        }
+
+        h2 { margin-bottom: 20px; font-weight: 300; letter-spacing: 1px; }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            color: var(--gold);
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            background: var(--blue);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(28, 57, 187, 0.4);
+        }
+
+        .login-btn:hover { background: var(--kesari); transform: translateY(-2px); }
+
+        .back-home {
+            margin-top: 20px;
+            display: block;
+            color: #ddd;
+            text-decoration: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <div class="khanda-logo">☬</div>
+    <h2>Member Login</h2>
+    <p style="font-size: 13px; margin-bottom: 25px; color: #eee;">Gurudwara Singh Sabha Mainajhundi</p>
+
+    <form id="loginForm">
+        <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="username" placeholder="Phone Number or Name" required>
+        </div>
+        
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" placeholder="Password" required>
+        </div>
+
+        <button type="submit" class="login-btn">LOGIN</button>
+    </form>
+
+    <a href="index.html" class="back-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+</div>
+
+<script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwn-pXkDa6gCiJG8XSXAD-3__4hafynue1DK1L1e54a3fMbV0C7ur0sFM7qoi8p2Ak9/exec';
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const user = document.getElementById('username').value;
+        const pass = document.getElementById('password').value;
+        
+        const btn = document.querySelector('.login-btn');
+        btn.innerText = "Verifying...";
+
+        try {
+            // This calls the doGet function we added to your Google Apps Script earlier
+            const response = await fetch(`${SCRIPT_URL}?user=${user}&pass=${pass}`);
+            const result = await response.text();
+
+            if (result === "Login Successful") {
+                alert("Welcome, Khalsa Ji!");
+                window.location.href = "admin_dashboard.html"; // Redirect to a dashboard
+            } else {
+                alert("Invalid Details. Please try again.");
+                btn.innerText = "LOGIN";
+            }
+        } catch (error) {
+            alert("Error connecting to database.");
+            btn.innerText = "LOGIN";
+        }
+    });
+</script>
+
+</body>
+</html>

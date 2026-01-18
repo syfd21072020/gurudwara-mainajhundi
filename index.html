@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gurudwara Singh Sabha Mainajhundi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --kesari: #FF9933;
+            --blue: #1C39BB;
+            --white: #ffffff;
+            --gold: #D4AF37;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            scroll-behavior: smooth;
+        }
+
+        /* Header & 3D Khanda */
+        header {
+            background-color: var(--blue);
+            color: var(--white);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 5px solid var(--gold);
+            text-align: center;
+        }
+
+        .khanda-3d {
+            font-size: 50px;
+            color: var(--gold);
+            text-shadow: 2px 2px 0px #856404, 4px 4px 0px #5e4602, 6px 6px 10px rgba(0,0,0,0.5);
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 10px var(--gold); }
+            to { text-shadow: 2px 2px 25px var(--white); }
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--kesari);
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            background-color: white;
+            color: var(--kesari);
+            border-radius: 5px;
+        }
+
+        /* Hero & Sections */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1621345633190-7f287895057b?auto=format&fit=crop&q=80&w=2000');
+            background-size: cover;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .section-container { padding: 50px 20px; max-width: 1100px; margin: auto; }
+        
+        /* Gurbani Player & Cards */
+        .card-grid { display: flex; flex-wrap: wrap; gap: 25px; margin-top: 20px; }
+        .info-card { flex: 1; min-width: 300px; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+
+        /* Gallery */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+        .gallery-item { position: relative; overflow: hidden; border-radius: 10px; height: 200px; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; }
+        .gallery-item:hover img { transform: scale(1.1); }
+
+        /* Forms */
+        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
+        .btn-submit { background: var(--blue); color: white; border: none; padding: 12px; width: 100%; cursor: pointer; font-weight: bold; }
+
+        /* Table */
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background: var(--gold); color: white; }
+
+        footer { background: #222; color: white; text-align: center; padding: 20px; margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="khanda-3d">☬</div>
+        <div>
+            <h1 style="margin:0;">Gurudwara Singh Sabha Mainajhundi</h1>
+            <p style="margin:5px 0 0 0;">ਧਨੁ ਗੁਰੂ ਨਾਨਕ | Dhan Guru Nanak</p>
+        </div>
+        <div class="khanda-3d">☬</div>
+    </header>
+
+    <nav>
+        <a href="#">Home</a>
+        <a href="#gurbani">Live Gurbani</a>
+        <a href="#members-list">Members</a>
+        <a href="#sewa">Sewa Submit</a>
+        <a href="#events">Events</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#donate">Donate</a>
+        <a href="#contact">Contact</a>
+        <a href="#" style="background: var(--blue); border-radius: 5px;">Login/Register</a>
+    </nav>
+
+    <div class="hero">
+        <h2>Welcome to the Holy Sangat</h2>
+        <p>Serving the village of Mainajhundi with Devotion</p>
+    </div>
+
+    <section id="gurbani" class="section-container">
+        <div class="card-grid">
+            <div class="info-card" style="border-top: 4px solid var(--gold);">
+                <h3><i class="fas fa-play"></i> Nitnem Sahib</h3>
+                <select id="audioSelect" onchange="changeAudio()">
+                    <option value="https://s3.amazonaws.com/gurbani/Japji_Sahib.mp3">Japji Sahib</option>
+                    <option value="https://s3.amazonaws.com/gurbani/Rehras_Sahib.mp3">Rehras Sahib</option>
+                </select>
+                <audio id="mainAudio" controls style="width: 100%; margin-top: 15px;">
+                    <source src="https://s3.amazonaws.com/gurbani/Japji_Sahib.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+            <div class="info-card" style="background: var(--blue); color: white;">
+                <h3>Live Darbar Sahib</h3>
+                <p>Listen to Live Kirtan from Sri Amritsar.</p>
+                <a href="https://www.sgpc.net/live-kirtan-darbar-sahib/" target="_blank" style="color: var(--gold); font-weight: bold;">Click Here to Listen Live</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="sewa" class="section-container" style="background: #fff; border-radius: 20px;">
+        <h2 style="text-align: center; color: var(--blue);">Sewa Contribution</h2>
+        <form id="sewaForm" style="max-width: 500px; margin: auto;">
+            <input type="text" name="name" placeholder="Full Name" required>
+            <input type="tel" name="phone" placeholder="Mobile Number" required>
+            <select name="sewa_type">
+                <option value="Langar">Langar Sewa</option>
+                <option value="Construction">Construction</option>
+                <option value="General">General Donation</option>
+            </select>
+            <input type="text" name="detail" placeholder="Detail (Amount or Item)">
+            <button type="submit" class="btn-submit">SUBMIT SEWA</button>
+        </form>
+    </section>
+
+    <section id="members-list" class="section-container">
+        <h2 style="text-align: center;">Member Directory (100+)</h2>
+        <div style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr><th>No.</th><th>Name</th><th>Village</th></tr>
+                </thead>
+                <tbody id="memberData">
+                    <tr><td colspan="3" style="text-align:center;">Loading data from Google Sheets...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="donate" class="section-container" style="text-align: center; background: #fff9f2;">
+        <h2>Dasvandh & Donations</h2>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; align-items: center;">
+            <div style="flex: 1; text-align: left;">
+                <p>Your contributions help us maintain the Gurudwara Sahib and continue the Langar Sewa for the Sangat.</p>
+                <strong>Bank: State Bank of India | A/c: XXXXXXXX1234</strong>
+            </div>
+            <div style="background: white; padding: 20px; border: 2px dashed var(--gold);">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=MainajhundiGurudwara" alt="QR">
+                <p>Scan to Pay</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section-container">
+        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1;">
+                <h2>Contact Us</h2>
+                <p><strong>Location:</strong> Maina Jhundi, Uttarakhand 262405</p>
+                <p><strong>Pardhan Ji:</strong> +91 XXXXX-XXXXX</p>
+            </div>
+            <div style="flex: 2; height: 300px; border-radius: 10px; overflow: hidden;">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.2345!2d79.8765!3d28.9876!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDU5JzE1LjQiTiA3OcKwNTInMzUuNCJF!5e0!3m2!1sen!2sin!4v123456789" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Gurudwara Singh Sabha Mainajhundi. Degh Teg Fateh.</p>
+    </footer>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwn-pXkDa6gCiJG8XSXAD-3__4hafynue1DK1L1e54a3fMbV0C7ur0sFM7qoi8p2Ak9/exec';
+
+        // Change Audio Function
+        function changeAudio() {
+            const audio = document.getElementById('mainAudio');
+            audio.src = document.getElementById('audioSelect').value;
+            audio.play();
+        }
+
+        // Fetch Members from Google Sheets
+        async function loadMembers() {
+            try {
+                const response = await fetch(SCRIPT_URL + "?action=getMembers");
+                const members = await response.json();
+                const tableBody = document.getElementById('memberData');
+                tableBody.innerHTML = '';
+                members.forEach((m, i) => {
+                    tableBody.innerHTML += `<tr><td>${i+1}</td><td>${m.name}</td><td>${m.village}</td></tr>`;
+                });
+            } catch (e) { console.log("Check SCRIPT_URL"); }
+        }
+
+        // Handle Sewa Form
+        document.getElementById('sewaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert("Submitting to Google Sheets...");
+            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: new FormData(this) })
+            .then(() => { alert("Sewa Recorded!"); this.reset(); });
+        });
+
+        window.onload = loadMembers;
+    </script>
+</body>
+</html>

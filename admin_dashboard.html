@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Mainajhundi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --blue: #1C39BB; --gold: #D4AF37; --bg: #f0f2f5; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; }
+        
+        .sidebar { background: var(--blue); color: white; width: 250px; height: 100vh; position: fixed; padding: 20px; box-sizing: border-box; }
+        .main-content { margin-left: 250px; padding: 30px; }
+        
+        /* Stats Cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 4px solid var(--gold); }
+        .stat-card h3 { margin: 0; font-size: 14px; color: #666; }
+        .stat-card p { font-size: 24px; font-weight: bold; margin: 10px 0 0 0; color: var(--blue); }
+
+        /* Tables */
+        .data-table { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { color: #666; font-size: 14px; }
+        
+        .btn-approve { background: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar { width: 100%; height: auto; position: relative; }
+            .main-content { margin-left: 0; padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2 style="color: var(--gold);"><i class="fas fa-user-shield"></i> Admin Panel</h2>
+    <p style="font-size: 12px;">Mainajhundi Committee</p>
+    <hr style="border: 0.5px solid rgba(255,255,255,0.1); margin: 20px 0;">
+    <p><i class="fas fa-tachometer-alt"></i> Dashboard</p>
+    <p><i class="fas fa-users"></i> Manage Members</p>
+    <p><i class="fas fa-hand-holding-heart"></i> Sewa Records</p>
+    <a href="index.html" style="color: white; text-decoration: none; position: absolute; bottom: 30px;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+
+<div class="main-content">
+    <h1>Management Overview</h1>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Total Members</h3>
+            <p id="totalMembers">100+</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Sewa (This Month)</h3>
+            <p id="totalSewa">₹ 0</p>
+        </div>
+        <div class="stat-card">
+            <h3>Pending Approvals</h3>
+            <p style="color: #dc3545;">0</p>
+        </div>
+    </div>
+
+    <div class="data-table">
+        <h3>Recent Sewa Submissions</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Detail/Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="adminSewaData">
+                <tr><td colspan="4" style="text-align:center;">Fetching records...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwn-pXkDa6gCiJG8XSXAD-3__4hafynue1DK1L1e54a3fMbV0C7ur0sFM7qoi8p2Ak9/exec';
+
+    async function loadAdminData() {
+        try {
+            // Reusing your getMembers function or a similar one for Sewa
+            const response = await fetch(SCRIPT_URL + "?action=getSewaRecords");
+            const records = await response.json();
+            
+            const tableBody = document.getElementById('adminSewaData');
+            tableBody.innerHTML = '';
+
+            let totalMoney = 0;
+
+            records.forEach(record => {
+                // If it's a number, add to total
+                if(!isNaN(record.detail)) totalMoney += parseFloat(record.detail);
+
+                tableBody.innerHTML += `
+                    <tr>
+                        <td>${record.name}</td>
+                        <td>${record.sewa_type}</td>
+                        <td>${record.detail}</td>
+                        <td><button class="btn-approve">Approve</button></td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('totalSewa').innerText = "₹ " + totalMoney;
+        } catch (error) {
+            console.log("Error loading data");
+        }
+    }
+
+    window.onload = loadAdminData;
+</script>
+
+</body>
+</html>
